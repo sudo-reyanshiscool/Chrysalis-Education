@@ -51,7 +51,6 @@ html.touch, html.touch * { cursor: auto; }
   position: fixed;
   top: 0; left: 0;
   z-index: 9998;
-  mix-blend-mode: difference;
 }
 .cursor__dot,
 .cursor__ring {
@@ -61,17 +60,19 @@ html.touch, html.touch * { cursor: auto; }
   will-change: transform;
 }
 .cursor__dot {
-  width: 6px; height: 6px;
-  margin: -3px 0 0 -3px;
-  background: var(--parchment);
+  width: 8px; height: 8px;
+  margin: -4px 0 0 -4px;
+  background: var(--gold);
   border-radius: 50%;
+  box-shadow: 0 0 10px var(--gold), 0 0 20px rgba(196, 137, 220, 0.6);
   transition: width 0.25s ease, height 0.25s ease, margin 0.25s ease, background 0.25s ease;
 }
 .cursor__ring {
   width: 36px; height: 36px;
   margin: -18px 0 0 -18px;
-  border: 1.5px solid var(--parchment);
+  border: 1.5px solid var(--accent-soft);
   border-radius: 50%;
+  box-shadow: 0 0 12px rgba(154, 111, 196, 0.35);
   transition: width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
               height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
               margin 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -84,7 +85,8 @@ html.touch, html.touch * { cursor: auto; }
 .cursor.is-hover .cursor__ring {
   width: 60px; height: 60px;
   margin: -30px 0 0 -30px;
-  background: rgba(245, 239, 228, 0.15);
+  background: rgba(196, 137, 220, 0.18);
+  border-color: var(--gold);
 }
 .cursor.is-hidden { opacity: 0; }
 

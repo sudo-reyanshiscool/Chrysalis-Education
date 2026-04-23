@@ -37,24 +37,25 @@ document.querySelectorAll("a, button, .service, input, textarea, label").forEach
 window.addEventListener("mouseleave", () => cursor.classList.add("is-hidden"));
 window.addEventListener("mouseenter", () => cursor.classList.remove("is-hidden"));
 
-// ---------- Sparkle trail ----------
+// ---------- Sparkle trail (continuous) ----------
 const SPARKLE_GLYPHS = ["✦", "✧", "✨", "·"];
 const SPARKLE_COLORS = ["#c489dc", "#e0b8ec", "#9a6fc4", "#fff0ff"];
-let lastTrail = 0;
-let lastX = 0, lastY = 0;
-const TRAIL_INTERVAL = 55;      // ms between spawns — faster = denser sparkle
-const TRAIL_MIN_SPEED = 0.05;   // spawn even on slow moves
-
+let cursorX = window.innerWidth / 2, cursorY = window.innerHeight / 2;
+let cursorActive = false;
 window.addEventListener("mousemove", (e) => {
-  const now = performance.now();
-  const dt = now - lastTrail;
-  if (dt < TRAIL_INTERVAL) return;
-  const speed = Math.hypot(e.clientX - lastX, e.clientY - lastY) / dt;
-  lastX = e.clientX; lastY = e.clientY;
-  if (speed < TRAIL_MIN_SPEED) return;
-  lastTrail = now;
-  spawnSparkle(e.clientX + (Math.random() - 0.5) * 14, e.clientY + (Math.random() - 0.5) * 14);
+  cursorX = e.clientX; cursorY = e.clientY;
+  cursorActive = true;
 });
+window.addEventListener("mouseleave", () => { cursorActive = false; });
+window.addEventListener("mouseenter", () => { cursorActive = true; });
+
+setInterval(() => {
+  if (!cursorActive) return;
+  spawnSparkle(
+    cursorX + (Math.random() - 0.5) * 18,
+    cursorY + (Math.random() - 0.5) * 18
+  );
+}, 55);
 
 function spawnSparkle(x, y) {
   const s = document.createElement("span");
