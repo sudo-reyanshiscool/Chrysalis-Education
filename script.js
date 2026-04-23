@@ -127,24 +127,32 @@ const io = new IntersectionObserver((entries) => {
 
 document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
-// ---------- Parallax on hero ----------
+// ---------- Scroll: parallax + nav shadow (rAF-throttled) ----------
 const heroBg = document.querySelector(".hero__bg");
 const heroContent = document.querySelector(".hero__content");
-window.addEventListener("scroll", () => {
+const nav = document.querySelector(".nav");
+let scrollTicking = false;
+let lastScrollY = -1;
+function onScrollFrame() {
+  scrollTicking = false;
   const y = window.scrollY;
-  if (y < window.innerHeight) {
-    if (heroBg) heroBg.style.transform = `translateY(${y * 0.3}px) scale(${1 + y * 0.0004})`;
+  if (y === lastScrollY) return;
+  lastScrollY = y;
+  if (nav) nav.classList.toggle("scrolled", y > 40);
+  const vh = window.innerHeight;
+  if (y < vh) {
+    if (heroBg) heroBg.style.transform = `translate3d(0, ${y * 0.3}px, 0) scale(${1 + y * 0.0004})`;
     if (heroContent) {
-      heroContent.style.transform = `translateY(${y * 0.2}px)`;
-      heroContent.style.opacity = String(Math.max(0, 1 - y / (window.innerHeight * 0.7)));
+      heroContent.style.transform = `translate3d(0, ${y * 0.2}px, 0)`;
+      heroContent.style.opacity = String(Math.max(0, 1 - y / (vh * 0.7)));
     }
   }
-}, { passive: true });
-
-// ---------- Nav shadow on scroll ----------
-const nav = document.querySelector(".nav");
+}
 window.addEventListener("scroll", () => {
-  nav.classList.toggle("scrolled", window.scrollY > 40);
+  if (!scrollTicking) {
+    scrollTicking = true;
+    requestAnimationFrame(onScrollFrame);
+  }
 }, { passive: true });
 
 // ---------- Magnetic buttons ----------
@@ -234,7 +242,7 @@ wa.innerHTML = `
 document.body.appendChild(wa);
 
 // ---------- Picture placeholders: resolve pic_N to first matching file ----------
-const PIC_EXTS = ["jpg", "jpeg", "png", "webp", "gif", "avif", "JPG", "JPEG", "PNG"];
+const PIC_EXTS = ["jpg", "png", "webp", "jpeg"];
 function tryLoad(src) {
   return new Promise((resolve) => {
     const img = new Image();

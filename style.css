@@ -34,7 +34,6 @@ body {
     radial-gradient(ellipse at 0% 0%, rgba(107, 44, 145, 0.1), transparent 40%),
     radial-gradient(ellipse at 100% 100%, rgba(74, 32, 128, 0.1), transparent 45%),
     var(--parchment);
-  background-attachment: fixed;
   color: var(--ink);
   line-height: 1.6;
   overflow-x: hidden;
@@ -98,9 +97,8 @@ html.touch, html.touch * { cursor: auto; }
   z-index: 9997;
   translate: -50% -50%;
   animation: sparkleFade var(--life) cubic-bezier(0.2, 0.6, 0.2, 1) forwards;
-  will-change: transform, opacity;
   user-select: none;
-  text-shadow: 0 0 8px currentColor, 0 0 14px rgba(196, 137, 220, 0.5);
+  text-shadow: 0 0 8px currentColor;
 }
 @keyframes sparkleFade {
   0%   { opacity: 0; transform: translate(0, 0) rotate(0deg) scale(0); }
@@ -153,9 +151,9 @@ html.touch, html.touch * { cursor: auto; }
   justify-content: space-between;
   align-items: center;
   padding: 1.4rem 3rem;
-  background: linear-gradient(135deg, rgba(48, 9, 92, 0.92) 0%, rgba(26, 10, 74, 0.92) 100%);
-  backdrop-filter: blur(14px) saturate(1.4);
-  -webkit-backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, rgba(48, 9, 92, 0.96) 0%, rgba(26, 10, 74, 0.96) 100%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 100;
   border-bottom: 1px solid transparent;
   transition: border-color 0.4s ease, padding 0.4s ease;
@@ -963,11 +961,6 @@ body.leaving {
 }
 .map iframe {
   display: block;
-  filter: saturate(0.9) hue-rotate(-10deg);
-  transition: filter 0.5s ease;
-}
-.map:hover iframe {
-  filter: saturate(1.05) hue-rotate(-5deg);
 }
 @media (max-width: 640px) {
   .map iframe { height: 360px; }
