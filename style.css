@@ -227,31 +227,49 @@ html.touch, html.touch * { cursor: auto; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 60% at 15% 20%, rgba(48, 9, 92, 0.55), transparent 60%),
-    radial-gradient(ellipse 70% 60% at 85% 30%, rgba(26, 10, 74, 0.45), transparent 60%),
-    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(196, 137, 220, 0.4), transparent 60%),
-    linear-gradient(180deg, #1a0a4a 0%, #3a0a48 55%, var(--parchment-deep) 100%);
-  background-size: 180% 180%, 180% 180%, 180% 180%, 100% 100%;
-  background-position: 0% 0%, 100% 0%, 50% 100%, 0% 0%;
+    linear-gradient(
+      135deg,
+      #1a0a4a 0%,
+      #4a1570 15%,
+      #6b2c91 30%,
+      #9a6fc4 45%,
+      #3a0a48 60%,
+      #1a0a4a 75%,
+      #4a1570 90%,
+      #6b2c91 100%
+    );
+  background-size: 400% 400%;
   animation:
-    drift 20s ease-in-out infinite alternate,
-    gradientWander 22s ease-in-out infinite alternate,
-    gradientHue 16s linear infinite;
-  will-change: transform, filter, background-position;
+    gradientFlow 14s ease-in-out infinite,
+    gradientHue 10s linear infinite;
+  will-change: background-position, filter;
 }
-@keyframes drift {
-  0%   { transform: scale(1) translate(0, 0); }
-  100% { transform: scale(1.08) translate(-2%, 2%); }
+.hero__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 20% 20%, rgba(212, 165, 224, 0.35), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 80% 80%, rgba(154, 111, 196, 0.35), transparent 60%);
+  background-size: 200% 200%, 200% 200%;
+  animation: gradientWander 12s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+  will-change: background-position;
 }
-@keyframes gradientWander {
-  0%   { background-position: 0%   0%,   100% 0%,   50%  100%, 0% 0%; }
-  50%  { background-position: 80%  50%,  20%  70%,  30%  30%,  0% 0%; }
-  100% { background-position: 30%  100%, 70%  20%,  100% 60%,  0% 0%; }
+@keyframes gradientFlow {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
 }
 @keyframes gradientHue {
-  0%   { filter: hue-rotate(0deg)  saturate(1); }
-  50%  { filter: hue-rotate(-18deg) saturate(1.15); }
-  100% { filter: hue-rotate(0deg)  saturate(1); }
+  0%   { filter: hue-rotate(0deg)   saturate(1); }
+  50%  { filter: hue-rotate(-30deg) saturate(1.25); }
+  100% { filter: hue-rotate(0deg)   saturate(1); }
+}
+@keyframes gradientWander {
+  0%   { background-position: 0% 0%,   100% 100%; }
+  50%  { background-position: 100% 50%, 0% 50%; }
+  100% { background-position: 50% 100%, 50% 0%; }
 }
 
 .hero__content {
@@ -382,13 +400,36 @@ html.touch, html.touch * { cursor: auto; }
 .page-hero {
   padding: 12rem 2rem 6rem;
   text-align: center;
-  background:
-    radial-gradient(ellipse at 30% 40%, rgba(196, 137, 220, 0.3), transparent 55%),
-    radial-gradient(ellipse at 70% 60%, rgba(48, 9, 92, 0.55), transparent 60%),
-    linear-gradient(180deg, #1a0a4a 0%, #3a0a48 60%, var(--parchment-deep) 100%);
+  background: linear-gradient(
+    135deg,
+    #1a0a4a 0%,
+    #4a1570 20%,
+    #6b2c91 40%,
+    #9a6fc4 55%,
+    #3a0a48 70%,
+    #1a0a4a 85%,
+    #4a1570 100%
+  );
+  background-size: 400% 400%;
+  animation:
+    gradientFlow 14s ease-in-out infinite,
+    gradientHue 10s linear infinite;
   position: relative;
   overflow: hidden;
 }
+.page-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 25% 30%, rgba(212, 165, 224, 0.3), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 75% 70%, rgba(154, 111, 196, 0.3), transparent 60%);
+  background-size: 200% 200%, 200% 200%;
+  animation: gradientWander 12s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.page-hero > * { position: relative; z-index: 1; }
 .page-hero__eyebrow {
   font-family: var(--serif);
   font-style: italic;
