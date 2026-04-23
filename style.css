@@ -227,15 +227,31 @@ html.touch, html.touch * { cursor: auto; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 15% 20%, rgba(48, 9, 92, 0.55), transparent 55%),
-    radial-gradient(ellipse at 85% 30%, rgba(26, 10, 74, 0.45), transparent 55%),
-    radial-gradient(ellipse at 50% 100%, rgba(196, 137, 220, 0.35), transparent 60%),
+    radial-gradient(ellipse 60% 60% at 15% 20%, rgba(48, 9, 92, 0.55), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 85% 30%, rgba(26, 10, 74, 0.45), transparent 60%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(196, 137, 220, 0.4), transparent 60%),
     linear-gradient(180deg, #1a0a4a 0%, #3a0a48 55%, var(--parchment-deep) 100%);
-  animation: drift 20s ease-in-out infinite alternate;
+  background-size: 180% 180%, 180% 180%, 180% 180%, 100% 100%;
+  background-position: 0% 0%, 100% 0%, 50% 100%, 0% 0%;
+  animation:
+    drift 20s ease-in-out infinite alternate,
+    gradientWander 22s ease-in-out infinite alternate,
+    gradientHue 16s linear infinite;
+  will-change: transform, filter, background-position;
 }
 @keyframes drift {
-  0% { transform: scale(1) translate(0, 0); }
+  0%   { transform: scale(1) translate(0, 0); }
   100% { transform: scale(1.08) translate(-2%, 2%); }
+}
+@keyframes gradientWander {
+  0%   { background-position: 0%   0%,   100% 0%,   50%  100%, 0% 0%; }
+  50%  { background-position: 80%  50%,  20%  70%,  30%  30%,  0% 0%; }
+  100% { background-position: 30%  100%, 70%  20%,  100% 60%,  0% 0%; }
+}
+@keyframes gradientHue {
+  0%   { filter: hue-rotate(0deg)  saturate(1); }
+  50%  { filter: hue-rotate(-18deg) saturate(1.15); }
+  100% { filter: hue-rotate(0deg)  saturate(1); }
 }
 
 .hero__content {
