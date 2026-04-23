@@ -221,15 +221,19 @@ body.leaving .loader {
   align-items: center;
   gap: 0.5rem;
 }
-.nav__mark {
-  width: 34px;
-  height: 34px;
-  display: inline-block;
+.nav__logo {
+  height: 44px;
+  width: auto;
+  display: block;
   object-fit: contain;
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
 }
-.nav__brand:hover .nav__mark {
-  transform: rotate(-8deg) scale(1.08);
+.nav__brand:hover .nav__logo {
+  transform: scale(1.04);
+  opacity: 0.88;
+}
+.nav.scrolled .nav__logo {
+  height: 38px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -826,14 +830,6 @@ body.leaving {
 }
 
 /* ---------- BRAND LOGOS ---------- */
-.hero__logo {
-  display: block;
-  width: clamp(120px, 14vw, 180px);
-  height: auto;
-  margin: 0 auto 2.5rem;
-  border-radius: 14px;
-  box-shadow: 0 24px 60px -18px rgba(26, 10, 74, 0.7);
-}
 .footer__brand {
   display: inline-flex;
   align-items: center;
