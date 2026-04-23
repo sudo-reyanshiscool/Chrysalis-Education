@@ -17,6 +17,15 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+::-moz-selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
 html { scroll-behavior: smooth; }
 
 body {
