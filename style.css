@@ -44,41 +44,73 @@ body {
 html:not(.touch), html:not(.touch) * { cursor: none !important; }
 html.touch, html.touch * { cursor: auto; }
 
-/* ---------- PAGE CURTAIN (load transition) ---------- */
-body::before {
-  content: "";
+/* ---------- BUTTERFLY LOADER ---------- */
+.loader {
   position: fixed;
   inset: 0;
-  background: var(--ink);
-  z-index: 9999;
-  transform-origin: top;
-  animation: curtainUp 1.2s cubic-bezier(0.77, 0, 0.18, 1) forwards;
-  animation-delay: 0.2s;
-  pointer-events: none;
-}
-body::after {
-  content: "✦";
-  position: fixed;
-  inset: 0;
+  background: radial-gradient(ellipse at center, #3a0a48 0%, #1a0a4a 60%, #0d0520 100%);
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--parchment);
-  font-family: var(--serif);
-  font-size: 3rem;
-  z-index: 10000;
-  animation: markOut 0.8s ease forwards;
-  animation-delay: 0.1s;
   pointer-events: none;
+  animation: loaderOut 0.9s cubic-bezier(0.77, 0, 0.18, 1) 1.4s forwards;
 }
-@keyframes curtainUp {
-  0% { transform: scaleY(1); }
-  100% { transform: scaleY(0); }
+.loader__butterfly {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(220px, 28vw, 340px);
+  height: clamp(160px, 20vw, 240px);
+  perspective: 900px;
+  filter: drop-shadow(0 20px 40px rgba(196, 137, 220, 0.35));
+  animation: butterflyHover 1.4s ease-in-out infinite alternate;
 }
-@keyframes markOut {
-  0% { opacity: 0; transform: scale(0.6) rotate(0deg); }
-  40% { opacity: 1; transform: scale(1) rotate(90deg); }
-  100% { opacity: 0; transform: scale(1.8) rotate(180deg); }
+.loader__wing {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+.loader__wing--l {
+  left: 0;
+  transform-origin: right center;
+  animation: flapLeft 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite alternate;
+}
+.loader__wing--r {
+  right: 0;
+  transform-origin: left center;
+  animation: flapRight 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite alternate;
+}
+@keyframes flapLeft {
+  0%   { transform: rotateY(-70deg); }
+  100% { transform: rotateY(15deg); }
+}
+@keyframes flapRight {
+  0%   { transform: rotateY(70deg) scaleX(-1); }
+  100% { transform: rotateY(-15deg) scaleX(-1); }
+}
+@keyframes butterflyHover {
+  0%   { transform: translateY(-10px) rotate(-2deg); }
+  100% { transform: translateY(10px) rotate(2deg); }
+}
+@keyframes loaderOut {
+  0%   { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.1); visibility: hidden; }
+}
+body.loaded .loader {
+  animation: loaderOut 0.7s cubic-bezier(0.77, 0, 0.18, 1) 0.3s forwards;
+}
+body.leaving .loader {
+  animation: loaderIn 0.5s cubic-bezier(0.77, 0, 0.18, 1) forwards;
+  pointer-events: auto;
+}
+@keyframes loaderIn {
+  0%   { opacity: 0; visibility: visible; transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 /* ---------- CUSTOM CURSOR ---------- */
