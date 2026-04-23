@@ -1,16 +1,16 @@
 :root {
-  --ink: #15100a;
-  --ink-soft: #5a4a3a;
-  --parchment: #f4e9d2;
-  --parchment-deep: #e6d4ae;
-  --accent: #a8341d;          /* deep vermilion */
-  --accent-soft: #d4823a;     /* saffron */
-  --emerald: #1f5e4a;         /* library green */
-  --emerald-soft: #3a8a6f;
-  --indigo: #2a2e5f;          /* manuscript blue */
-  --gold: #c8962d;            /* gilt */
-  --plum: #5c1d3a;            /* claret */
-  --rule: #b89a68;
+  --ink: #1c0d28;             /* near-black aubergine */
+  --ink-soft: #5a4566;
+  --parchment: #f5edf7;       /* pale lavender cream */
+  --parchment-deep: #e4d2ea;
+  --accent: #6b2c91;          /* royal purple */
+  --accent-soft: #b088d0;     /* lavender */
+  --emerald: #4a2080;         /* deep violet (kept var name for reuse) */
+  --emerald-soft: #8a5fb3;    /* soft violet */
+  --indigo: #2a1a5e;          /* deep indigo-purple */
+  --gold: #d4a5e0;            /* pale lilac highlight (kept var name) */
+  --plum: #4a1238;            /* wine plum */
+  --rule: #c4aecb;
   --serif: "Cormorant Garamond", "Garamond", Georgia, serif;
   --sans: "Inter", -apple-system, sans-serif;
 }
@@ -22,8 +22,8 @@ html { scroll-behavior: smooth; }
 body {
   font-family: var(--sans);
   background:
-    radial-gradient(ellipse at 0% 0%, rgba(168, 52, 29, 0.07), transparent 40%),
-    radial-gradient(ellipse at 100% 100%, rgba(31, 94, 74, 0.08), transparent 45%),
+    radial-gradient(ellipse at 0% 0%, rgba(107, 44, 145, 0.1), transparent 40%),
+    radial-gradient(ellipse at 100% 100%, rgba(74, 32, 128, 0.1), transparent 45%),
     var(--parchment);
   background-attachment: fixed;
   color: var(--ink);
@@ -239,9 +239,9 @@ body::after {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 15% 25%, rgba(168, 52, 29, 0.22), transparent 55%),
-    radial-gradient(ellipse at 85% 75%, rgba(31, 94, 74, 0.25), transparent 55%),
-    radial-gradient(ellipse at 50% 100%, rgba(200, 150, 45, 0.18), transparent 60%),
+    radial-gradient(ellipse at 15% 25%, rgba(107, 44, 145, 0.28), transparent 55%),
+    radial-gradient(ellipse at 85% 75%, rgba(74, 32, 128, 0.3), transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(212, 165, 224, 0.35), transparent 60%),
     linear-gradient(180deg, var(--parchment) 0%, var(--parchment-deep) 100%);
   animation: drift 20s ease-in-out infinite alternate;
 }
@@ -331,7 +331,7 @@ body::after {
   background: linear-gradient(135deg, var(--accent) 0%, var(--plum) 100%);
   color: var(--parchment);
   border-color: var(--plum);
-  box-shadow: 0 6px 18px -8px rgba(92, 29, 58, 0.6);
+  box-shadow: 0 6px 18px -8px rgba(74, 18, 56, 0.6);
 }
 .btn--primary:hover {
   background: linear-gradient(135deg, var(--plum) 0%, var(--ink) 100%);
@@ -369,8 +369,8 @@ body::after {
   padding: 12rem 2rem 6rem;
   text-align: center;
   background:
-    radial-gradient(ellipse at 30% 40%, rgba(176, 138, 95, 0.18), transparent 55%),
-    radial-gradient(ellipse at 70% 60%, rgba(122, 74, 43, 0.1), transparent 60%),
+    radial-gradient(ellipse at 30% 40%, rgba(176, 136, 208, 0.28), transparent 55%),
+    radial-gradient(ellipse at 70% 60%, rgba(74, 32, 128, 0.18), transparent 60%),
     linear-gradient(180deg, var(--parchment) 0%, var(--parchment-deep) 100%);
   position: relative;
   overflow: hidden;
@@ -573,7 +573,7 @@ body.leaving {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(168, 52, 29, 0.1) 0%, rgba(31, 94, 74, 0.14) 100%);
+  background: linear-gradient(135deg, rgba(107, 44, 145, 0.14) 0%, rgba(176, 136, 208, 0.18) 100%);
   opacity: 0;
   transition: opacity 0.6s ease;
 }
@@ -922,7 +922,7 @@ body.leaving {
   background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-soft) 100%);
 }
 .contact__social-handle--phone:hover {
-  box-shadow: 0 14px 30px -10px rgba(31, 94, 74, 0.5);
+  box-shadow: 0 14px 30px -10px rgba(74, 32, 128, 0.5);
 }
 
 /* ---------- FAQ ---------- */
