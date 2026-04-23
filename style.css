@@ -938,6 +938,12 @@ body.leaving {
 .contact__social-handle--phone:hover {
   box-shadow: 0 14px 30px -10px rgba(74, 32, 128, 0.5);
 }
+.contact__social-handle--map::before {
+  background: linear-gradient(135deg, var(--indigo) 0%, var(--accent) 100%);
+}
+.contact__social-handle--map:hover {
+  box-shadow: 0 14px 30px -10px rgba(26, 10, 74, 0.55);
+}
 
 /* ---------- FAQ ---------- */
 .faq { margin-top: 2rem; }
