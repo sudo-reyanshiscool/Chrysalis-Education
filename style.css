@@ -89,21 +89,21 @@ html.touch, html.touch * { cursor: auto; }
 .cursor.is-hidden { opacity: 0; }
 
 /* ---------- BOOK TRAIL ---------- */
-.book-trail {
+.sparkle-trail {
   position: fixed;
   pointer-events: none;
-  font-size: 13px;
-  opacity: 0.7;
+  font-size: 14px;
   z-index: 9997;
   translate: -50% -50%;
-  animation: trailFade var(--life) cubic-bezier(0.2, 0.6, 0.2, 1) forwards;
+  animation: sparkleFade var(--life) cubic-bezier(0.2, 0.6, 0.2, 1) forwards;
   will-change: transform, opacity;
   user-select: none;
+  text-shadow: 0 0 8px currentColor, 0 0 14px rgba(196, 137, 220, 0.5);
 }
-@keyframes trailFade {
-  0%   { opacity: 0; transform: translate(0, 0) rotate(0deg) scale(0.3); }
-  20%  { opacity: 1; transform: translate(0, 0) rotate(calc(var(--rot) * 0.3)) scale(var(--scale)); }
-  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(calc(var(--scale) * 0.7)); }
+@keyframes sparkleFade {
+  0%   { opacity: 0; transform: translate(0, 0) rotate(0deg) scale(0); }
+  25%  { opacity: 1; transform: translate(calc(var(--dx) * 0.3), calc(var(--dy) * 0.2)) rotate(calc(var(--rot) * 0.3)) scale(var(--scale)); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(calc(var(--scale) * 0.2)); }
 }
 
 /* ---------- BUTTERFLY CLICK BURST ---------- */

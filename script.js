@@ -37,12 +37,13 @@ document.querySelectorAll("a, button, .service, input, textarea, label").forEach
 window.addEventListener("mouseleave", () => cursor.classList.add("is-hidden"));
 window.addEventListener("mouseenter", () => cursor.classList.remove("is-hidden"));
 
-// ---------- Book trail (sparse) ----------
-const BOOK_GLYPHS = ["📖", "📕", "📘"];
+// ---------- Sparkle trail ----------
+const SPARKLE_GLYPHS = ["✦", "✧", "✨", "·"];
+const SPARKLE_COLORS = ["#c489dc", "#e0b8ec", "#9a6fc4", "#fff0ff"];
 let lastTrail = 0;
 let lastX = 0, lastY = 0;
-const TRAIL_INTERVAL = 220;     // ms between spawns
-const TRAIL_MIN_SPEED = 0.9;    // px/ms — only spawn while actually moving
+const TRAIL_INTERVAL = 55;      // ms between spawns — faster = denser sparkle
+const TRAIL_MIN_SPEED = 0.05;   // spawn even on slow moves
 
 window.addEventListener("mousemove", (e) => {
   const now = performance.now();
@@ -52,28 +53,23 @@ window.addEventListener("mousemove", (e) => {
   lastX = e.clientX; lastY = e.clientY;
   if (speed < TRAIL_MIN_SPEED) return;
   lastTrail = now;
-  spawnBook(e.clientX, e.clientY, {
-    drift: (Math.random() - 0.5) * 30,
-    fall: 25 + Math.random() * 20,
-    rot: (Math.random() - 0.5) * 50,
-    scale: 0.55 + Math.random() * 0.2,
-    life: 700,
-  });
+  spawnSparkle(e.clientX + (Math.random() - 0.5) * 14, e.clientY + (Math.random() - 0.5) * 14);
 });
 
-function spawnBook(x, y, opts) {
-  const b = document.createElement("span");
-  b.className = "book-trail";
-  b.textContent = BOOK_GLYPHS[Math.floor(Math.random() * BOOK_GLYPHS.length)];
-  b.style.left = x + "px";
-  b.style.top = y + "px";
-  b.style.setProperty("--dx", opts.drift + "px");
-  b.style.setProperty("--dy", opts.fall + "px");
-  b.style.setProperty("--rot", opts.rot + "deg");
-  b.style.setProperty("--scale", opts.scale);
-  b.style.setProperty("--life", opts.life + "ms");
-  document.body.appendChild(b);
-  setTimeout(() => b.remove(), opts.life);
+function spawnSparkle(x, y) {
+  const s = document.createElement("span");
+  s.className = "sparkle-trail";
+  s.textContent = SPARKLE_GLYPHS[Math.floor(Math.random() * SPARKLE_GLYPHS.length)];
+  s.style.left = x + "px";
+  s.style.top = y + "px";
+  s.style.color = SPARKLE_COLORS[Math.floor(Math.random() * SPARKLE_COLORS.length)];
+  s.style.setProperty("--dx", ((Math.random() - 0.5) * 30) + "px");
+  s.style.setProperty("--dy", (10 + Math.random() * 25) + "px");
+  s.style.setProperty("--rot", ((Math.random() - 0.5) * 180) + "deg");
+  s.style.setProperty("--scale", (0.5 + Math.random() * 0.8));
+  s.style.setProperty("--life", "900ms");
+  document.body.appendChild(s);
+  setTimeout(() => s.remove(), 900);
 }
 
 // ---------- Click burst (books fly outward) ----------
