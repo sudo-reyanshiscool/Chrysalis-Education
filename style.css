@@ -44,59 +44,6 @@ body {
 html:not(.touch), html:not(.touch) * { cursor: none !important; }
 html.touch, html.touch * { cursor: auto; }
 
-/* ---------- BUTTERFLY LOADER ---------- */
-.loader {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(ellipse at center, #3a0a48 0%, #1a0a4a 60%, #0d0520 100%);
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  animation: loaderOut 0.6s cubic-bezier(0.77, 0, 0.18, 1) 2.0s forwards;
-}
-.loader__flight {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-.loader__butterfly {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  font-size: clamp(5rem, 10vw, 8rem);
-  line-height: 1;
-  transform: translate(-50%, -50%);
-  filter: drop-shadow(0 10px 30px rgba(196, 137, 220, 0.6));
-  animation: butterflyPath 1.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards;
-  will-change: transform, opacity, left, top;
-  user-select: none;
-}
-@keyframes butterflyPath {
-  0%   { left: 18%;  top: 110%; transform: translate(-50%, -50%) rotate(-20deg) scale(0.35); opacity: 0; }
-  12%  { opacity: 1; }
-  25%  { left: 35%;  top: 72%;  transform: translate(-50%, -50%) rotate(-6deg)  scale(0.7); }
-  50%  { left: 55%;  top: 48%;  transform: translate(-50%, -50%) rotate(8deg)   scale(1); }
-  75%  { left: 72%;  top: 26%;  transform: translate(-50%, -50%) rotate(-4deg)  scale(0.95); }
-  90%  { opacity: 1; }
-  100% { left: 92%;  top: -25%; transform: translate(-50%, -50%) rotate(14deg)  scale(0.45); opacity: 0; }
-}
-@keyframes loaderOut {
-  0%   { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1.1); visibility: hidden; }
-}
-body.loaded .loader {
-  animation: loaderOut 0.6s cubic-bezier(0.77, 0, 0.18, 1) 1.2s forwards;
-}
-body.leaving .loader {
-  animation: loaderIn 0.5s cubic-bezier(0.77, 0, 0.18, 1) forwards;
-  pointer-events: auto;
-}
-@keyframes loaderIn {
-  0%   { opacity: 0; visibility: visible; transform: scale(1.1); }
-  100% { opacity: 1; transform: scale(1); }
-}
 
 /* ---------- CUSTOM CURSOR ---------- */
 .cursor {
