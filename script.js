@@ -84,21 +84,23 @@ window.addEventListener("click", (e) => {
   ripple(e.clientX, e.clientY);
 });
 
+const BUTTERFLY_GLYPHS = ["🦋", "🦋", "🦋"];
 function burst(x, y) {
-  const n = 8;
+  const n = 10;
   for (let i = 0; i < n; i++) {
     const angle = (i / n) * Math.PI * 2 + Math.random() * 0.3;
-    const dist = 70 + Math.random() * 60;
+    const dist = 80 + Math.random() * 80;
     const b = document.createElement("span");
-    b.className = "book-burst";
-    b.textContent = BOOK_GLYPHS[Math.floor(Math.random() * BOOK_GLYPHS.length)];
+    b.className = "butterfly-burst";
+    b.textContent = BUTTERFLY_GLYPHS[Math.floor(Math.random() * BUTTERFLY_GLYPHS.length)];
     b.style.left = x + "px";
     b.style.top = y + "px";
     b.style.setProperty("--tx", Math.cos(angle) * dist + "px");
     b.style.setProperty("--ty", Math.sin(angle) * dist + "px");
-    b.style.setProperty("--rot", (Math.random() - 0.5) * 540 + "deg");
+    b.style.setProperty("--rot", (Math.random() - 0.5) * 360 + "deg");
+    b.style.setProperty("--delay", (Math.random() * 120) + "ms");
     document.body.appendChild(b);
-    setTimeout(() => b.remove(), 1100);
+    setTimeout(() => b.remove(), 1600);
   }
 }
 
