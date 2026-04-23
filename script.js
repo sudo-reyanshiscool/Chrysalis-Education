@@ -155,6 +155,32 @@ window.addEventListener("scroll", () => {
   }
 }, { passive: true });
 
+// ---------- Hero mouse parallax ----------
+const hero = document.querySelector(".hero");
+const heroContentEl = document.getElementById("heroContent");
+const heroOrbs = document.querySelectorAll(".hero__orb");
+const heroButterflies = document.querySelectorAll(".hero__butterfly");
+if (hero && heroContentEl) {
+  let heroMx = 0, heroMy = 0;
+  let heroTicking = false;
+  hero.addEventListener("mousemove", (e) => {
+    const rect = hero.getBoundingClientRect();
+    heroMx = (e.clientX - rect.left) / rect.width - 0.5;
+    heroMy = (e.clientY - rect.top) / rect.height - 0.5;
+    if (!heroTicking) {
+      heroTicking = true;
+      requestAnimationFrame(() => {
+        heroTicking = false;
+        heroContentEl.style.transform =
+          `translate3d(${heroMx * 18}px, ${heroMy * 14}px, 0) rotateX(${-heroMy * 3}deg) rotateY(${heroMx * 3}deg)`;
+      });
+    }
+  });
+  hero.addEventListener("mouseleave", () => {
+    heroContentEl.style.transform = "translate3d(0, 0, 0)";
+  });
+}
+
 // ---------- Magnetic buttons ----------
 document.querySelectorAll(".btn").forEach((btn) => {
   btn.addEventListener("mousemove", (e) => {
