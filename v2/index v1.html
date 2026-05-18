@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chrysalis, A Centre for English Studies</title>
+<meta name="description" content="A small studio in New Delhi teaching English literature, composition, and examination preparation." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+  :root {
+    --ink:        #0E0817;
+    --aubergine:  #2A1A3D;
+    --plum:       #8E5BB8;
+    --heliotrope: #C5A8E3;
+    --cream:      #F2EBE0;
+    --hairline:   rgba(242, 235, 224, 0.10);
+    --serif: 'Cormorant Garamond', 'Instrument Serif', Georgia, serif;
+    --display: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --script: 'Caveat', cursive;
+  }
+
+  html, body { background: var(--ink); color: var(--cream); }
+  body {
+    margin: 0;
+    font-family: var(--serif);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Paper grain (subtle) */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* Plum wash gradient at section edges */
+  .plum-wash {
+    background: radial-gradient(60% 80% at 50% 0%, rgba(142, 91, 184, 0.18) 0%, rgba(142, 91, 184, 0.0) 70%);
+  }
+
+  /* ---------- Liquid glass (shared with hero) ---------- */
+  .liquid-glass {
+    background: rgba(255, 255, 255, 0.01);
+    background-blend-mode: luminosity;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: none;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.10);
+    position: relative;
+    overflow: hidden;
+  }
+  .liquid-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.4px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0.15) 20%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(255, 255, 255, 0.15) 80%,
+      rgba(255, 255, 255, 0.45) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+  }
+  .liquid-glass--plum::before {
+    background: linear-gradient(
+      180deg,
+      rgba(197, 168, 227, 0.55) 0%,
+      rgba(197, 168, 227, 0.18) 30%,
+      rgba(197, 168, 227, 0) 50%,
+      rgba(255, 255, 255, 0.10) 80%,
+      rgba(255, 255, 255, 0.35) 100%
+    );
+  }
+
+  /* ---------- Typography ---------- */
+  .display { font-family: var(--display); letter-spacing: -0.02em; font-feature-settings: "liga", "dlig"; }
+  .serif-body { font-family: var(--serif); }
+  .mono { font-family: var(--mono); letter-spacing: 0.16em; text-transform: uppercase; font-size: 0.72rem; }
+  .script { font-family: var(--script); }
+
+  .italic-plum em { color: var(--plum); font-style: italic; }
+
+  input:focus, textarea:focus, button:focus { outline: none; }
+  input, textarea { font-family: var(--serif); color: var(--cream); }
+
+  /* ---------- Hero (preserved from Hero.html) ---------- */
+  .hero-shell { position: relative; height: 100vh; min-height: 720px; background: #000; overflow: hidden; }
+
+  /* ---------- Spine numerals ---------- */
+  .spine {
+    position: fixed;
+    left: 1.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 30;
+    display: flex; flex-direction: column; gap: 0.9rem;
+    pointer-events: none;
+    mix-blend-mode: difference;
+  }
+  @media (max-width: 900px) { .spine { display: none; } }
+  .spine__item {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: rgba(242, 235, 224, 0.30);
+    transition: color 600ms cubic-bezier(0.25,1,0.5,1), transform 600ms cubic-bezier(0.25,1,0.5,1), letter-spacing 600ms;
+  }
+  .spine__item.active {
+    color: var(--heliotrope);
+    letter-spacing: 0.22em;
+  }
+  .spine__item .num { display: inline-block; width: 2.6rem; }
+  .spine__item .label { opacity: 0; transition: opacity 400ms; }
+  .spine__item.active .label { opacity: 0.85; }
+
+  /* ---------- Reveal-on-scroll ---------- */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 900ms cubic-bezier(0.65,0,0.35,1), transform 900ms cubic-bezier(0.65,0,0.35,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal.delay-1 { transition-delay: 120ms; }
+  .reveal.delay-2 { transition-delay: 240ms; }
+  .reveal.delay-3 { transition-delay: 360ms; }
+
+  /* ---------- Word stagger for display headings ---------- */
+  .stagger-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.6em);
+    transition: opacity 900ms cubic-bezier(0.65,0,0.35,1), transform 900ms cubic-bezier(0.65,0,0.35,1);
+  }
+  .stagger-heading.in .stagger-word { opacity: 1; transform: translateY(0); }
+
+  /* ---------- Marginalia ---------- */
+  .has-margin { position: relative; }
+  .margin-note {
+    font-family: var(--script);
+    color: var(--plum);
+    font-size: 1.4rem;
+    line-height: 1.18;
+    transform: rotate(-2deg);
+    opacity: 0;
+    transition: opacity 1200ms cubic-bezier(0.65,0,0.35,1), transform 1200ms cubic-bezier(0.65,0,0.35,1), color 300ms;
+  }
+  .margin-note.in { opacity: 0.82; transform: rotate(-2deg) translateX(0); }
+  .has-margin:hover .margin-note { opacity: 1; color: var(--heliotrope); }
+
+  @media (min-width: 1100px) {
+    .margin-note--right {
+      position: absolute;
+      right: -240px;
+      top: 0.4em;
+      width: 220px;
+      transform: rotate(-2deg) translateX(-12px);
+    }
+    .margin-note--left {
+      position: absolute;
+      left: -240px;
+      top: 0.4em;
+      width: 220px;
+      text-align: right;
+      transform: rotate(1.5deg) translateX(12px);
+    }
+  }
+  @media (max-width: 1099px) {
+    .margin-note { display: block; margin-top: 0.5rem; font-size: 1.2rem; }
+  }
+
+  /* ---------- Hairlines ---------- */
+  .hairline { border: 0; height: 1px; background: var(--hairline); margin: 0; }
+
+  /* ---------- Buttons ---------- */
+  .pill-btn {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    padding: 0.85rem 1.6rem;
+    border-radius: 9999px;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--cream);
+    transition: transform 400ms cubic-bezier(0.25,1,0.5,1), color 300ms;
+    position: relative;
+  }
+  .pill-btn:hover { color: #fff; transform: translateY(-1px); }
+  .pill-btn .arrow { transition: transform 400ms cubic-bezier(0.25,1,0.5,1); }
+  .pill-btn:hover .arrow { transform: translateX(4px); }
+
+  /* ---------- Fountain pen cursor ---------- */
+  #pen-cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 14px; height: 14px;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: normal;
+    transition: width 220ms cubic-bezier(0.25,1,0.5,1),
+                height 220ms cubic-bezier(0.25,1,0.5,1),
+                opacity 300ms;
+    will-change: transform;
+  }
+  #pen-cursor .dot {
+    position: absolute; inset: 0;
+    background: var(--heliotrope);
+    border-radius: 9999px;
+    box-shadow: 0 0 12px rgba(197,168,227,0.6);
+    transition: all 220ms cubic-bezier(0.25,1,0.5,1);
+  }
+  #pen-cursor .nib {
+    position: absolute; inset: 0;
+    opacity: 0;
+    transition: opacity 220ms;
+  }
+  #pen-cursor.nib-mode { width: 28px; height: 28px; }
+  #pen-cursor.nib-mode .dot { opacity: 0; }
+  #pen-cursor.nib-mode .nib { opacity: 1; }
+  #pen-cursor.hidden { opacity: 0; }
+
+  .ink-trail-dot {
+    position: fixed;
+    width: 4px; height: 4px;
+    border-radius: 9999px;
+    background: var(--plum);
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.6;
+    transition: opacity 600ms linear, transform 600ms cubic-bezier(0.25,1,0.5,1);
+  }
+
+  @media (hover: none), (pointer: coarse) {
+    body { cursor: auto; }
+    #pen-cursor { display: none; }
+  }
+
+  /* ---------- Section frame ---------- */
+  .section {
+    position: relative;
+    padding: 8rem 2rem;
+    z-index: 2;
+  }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  @media (min-width: 1100px) {
+    .section { padding: 10rem 4rem; }
+    .section-inner { padding-left: 3rem; padding-right: 3rem; }
+  }
+
+  /* ---------- Hero scroll cue ---------- */
+  .scroll-cue {
+    position: absolute; left: 50%; bottom: 2rem;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: rgba(242,235,224,0.6);
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+    z-index: 5;
+  }
+  .scroll-cue .line {
+    width: 1px; height: 32px; background: rgba(242,235,224,0.4);
+    animation: scrollLine 2.4s ease-in-out infinite;
+    transform-origin: top;
+  }
+  @keyframes scrollLine {
+    0%   { transform: scaleY(0); opacity: 0; }
+    40%  { transform: scaleY(1); opacity: 0.8; }
+    100% { transform: scaleY(1) translateY(28px); opacity: 0; }
+  }
+
+  /* ---------- Stat counters ---------- */
+  .stat-num {
+    font-family: var(--display);
+    font-size: clamp(4rem, 9vw, 7.5rem);
+    line-height: 0.9;
+    color: var(--heliotrope);
+    letter-spacing: -0.03em;
+  }
+
+  /* ---------- Imagery placeholder (heliotrope vignette + grain) ---------- */
+  .placeholder-img {
+    position: relative;
+    background: var(--aubergine);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .placeholder-img::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(70% 90% at 50% 30%, rgba(197,168,227,0.22) 0%, rgba(197,168,227,0) 70%),
+      repeating-linear-gradient(135deg, rgba(242,235,224,0.04) 0 1px, transparent 1px 6px);
+  }
+  .placeholder-img::after {
+    content: attr(data-caption);
+    position: absolute; left: 50%; bottom: 1rem; transform: translateX(-50%);
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(242,235,224,0.55);
+    white-space: nowrap;
+  }
+
+  /* ---------- Drop cap ---------- */
+  .dropcap::first-letter {
+    font-family: var(--display);
+    font-size: 4.5em;
+    float: left;
+    line-height: 0.85;
+    padding: 0.05em 0.12em 0 0;
+    color: var(--plum);
+    font-style: italic;
+  }
+
+  /* ---------- FAQ ---------- */
+  .faq-item { border-top: 1px solid var(--hairline); }
+  .faq-item:last-child { border-bottom: 1px solid var(--hairline); }
+  .faq-q {
+    width: 100%;
+    padding: 1.8rem 0;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 2rem;
+    text-align: left;
+    background: none;
+    color: var(--cream);
+    font-family: var(--display);
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    cursor: none;
+  }
+  .faq-sign {
+    width: 28px; height: 28px;
+    position: relative;
+    color: var(--heliotrope);
+    flex-shrink: 0;
+  }
+  .faq-sign::before, .faq-sign::after {
+    content: ""; position: absolute; left: 50%; top: 50%;
+    background: currentColor;
+    transition: transform 500ms cubic-bezier(0.25,1,0.5,1);
+  }
+  .faq-sign::before { width: 16px; height: 1.5px; transform: translate(-50%, -50%); }
+  .faq-sign::after { width: 1.5px; height: 16px; transform: translate(-50%, -50%); }
+  .faq-item.open .faq-sign::after { transform: translate(-50%, -50%) rotate(90deg); opacity: 0; }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 600ms cubic-bezier(0.65,0,0.35,1);
+    color: rgba(242,235,224,0.75);
+  }
+  .faq-a-inner { padding: 0 0 1.8rem; font-size: 1.15rem; line-height: 1.65; max-width: 720px; }
+  .faq-item.open .faq-a { max-height: 360px; }
+
+  /* ---------- Pullquote band ---------- */
+  .pull-band {
+    background: linear-gradient(180deg, rgba(142,91,184,0.10) 0%, rgba(142,91,184,0.03) 100%);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  /* ---------- Form ---------- */
+  .field { position: relative; display: block; }
+  .field-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--heliotrope);
+    margin-bottom: 0.6rem;
+  }
+  .field-input, .field-textarea {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--hairline);
+    padding: 0.85rem 0;
+    font-family: var(--display);
+    font-size: 1.4rem;
+    color: var(--cream);
+    transition: border-color 400ms;
+  }
+  .field-input:focus, .field-textarea:focus { border-bottom-color: var(--heliotrope); }
+  .field-textarea { resize: vertical; min-height: 100px; }
+
+  /* Ribbon nav helpers */
+  .nav-link {
+    color: rgba(242,235,224,0.78);
+    transition: color 300ms;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+  }
+  .nav-link:hover { color: var(--cream); }
+  .nav-link.is-active { color: var(--heliotrope); }
+
+  /* Section eyebrow */
+  .eyebrow {
+    color: var(--heliotrope);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+  }
+
+  /* Heliotrope rule */
+  .rule { width: 48px; height: 1px; background: var(--heliotrope); opacity: 0.6; display: inline-block; vertical-align: middle; margin: 0 0.75rem; }
+
+  /* Roman board card */
+  .board-card {
+    padding: 1.6rem 1.8rem;
+    border-radius: 18px;
+    min-height: 180px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+
+  /* Service number */
+  .service-number {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--heliotrope);
+    opacity: 0.55;
+    font-size: clamp(5rem, 11vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+  }
+
+  /* Logo mask */
+  .chrysalis-mark {
+    display: inline-block;
+    width: 1em; height: 1em;
+    background-color: currentColor;
+    -webkit-mask: url('assets/chrysalis-mark.svg') center / contain no-repeat;
+            mask: url('assets/chrysalis-mark.svg') center / contain no-repeat;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- Pen cursor -->
+<div id="pen-cursor" aria-hidden="true">
+  <span class="dot"></span>
+  <svg class="nib" viewBox="0 0 28 28" fill="none">
+    <path d="M14 2 L22 14 L17 14 L14 26 L11 14 L6 14 Z" fill="var(--heliotrope)" opacity="0.95"/>
+    <circle cx="14" cy="13" r="1.6" fill="var(--ink)"/>
+  </svg>
+</div>
+
+<!-- Spine numerals -->
+<aside class="spine" aria-hidden="true">
+  <div class="spine__item" data-target="about"><span class="num">i.</span><span class="label">A Centre</span></div>
+  <div class="spine__item" data-target="services"><span class="num">ii.</span><span class="label">Programmes</span></div>
+  <div class="spine__item" data-target="boards"><span class="num">iii.</span><span class="label">Curricula</span></div>
+  <div class="spine__item" data-target="testimonials"><span class="num">iv.</span><span class="label">In Their Words</span></div>
+  <div class="spine__item" data-target="contact"><span class="num">v.</span><span class="label">Correspondence</span></div>
+</aside>
+
+<div id="root"></div>
+
+<script type="text/babel" data-presets="env,react">
+const { useEffect, useRef, useState } = React;
+
+/* ---------- Inline icons ---------- */
+const Icon = ({ children, size = 24, ...p }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...p}>{children}</svg>
+);
+const ArrowRight = (p) => <Icon {...p}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></Icon>;
+const ArrowUpRight = (p) => <Icon {...p}><path d="M7 17 17 7"/><path d="M7 7h10v10"/></Icon>;
+const Instagram = (p) => <Icon {...p}><rect width="18" height="18" x="3" y="3" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></Icon>;
+const Phone = (p) => <Icon {...p}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></Icon>;
+const Mail = (p) => <Icon {...p}><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></Icon>;
+const MapPin = (p) => <Icon {...p}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></Icon>;
+
+/* ---------- Nav ---------- */
+function Nav() {
+  return (
+    <nav className="absolute top-0 left-0 right-0 z-30 px-6 md:px-10 py-6">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <a href="#" className="flex items-center gap-2.5 text-cream" style={{color:'var(--cream)'}}>
+          <span className="chrysalis-mark" style={{width: 30, height: 30}} aria-hidden="true"></span>
+          <span className="display" style={{fontSize: '1.5rem', letterSpacing: 0}}>Chrysalis</span>
+        </a>
+        <div className="hidden md:flex items-center gap-9">
+          {[
+            ['About', '#about'],
+            ['Programmes', '#services'],
+            ['Faculty', '#faculty'],
+            ['Testimonials', '#testimonials'],
+            ['Contact', '#contact'],
+          ].map(([label, href]) => (
+            <a key={label} href={href} className="nav-link" data-cursor="link">{label}</a>
+          ))}
+        </div>
+        <a href="#contact" className="liquid-glass pill-btn" data-cursor="link" style={{padding: '0.55rem 1.4rem', fontSize: '0.95rem'}}>
+          Enquire
+        </a>
+      </div>
+    </nav>
+  );
+}
+
+/* ---------- Hero (video + glass form, NOT overlaid) ---------- */
+function Hero() {
+  const videoRef = useRef(null);
+  const fadingOutRef = useRef(false);
+  const rafRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const cancelAnim = () => {
+      if (rafRef.current != null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+    const animateOpacity = (from, to, duration, onDone) => {
+      cancelAnim();
+      const start = performance.now();
+      const tick = (now) => {
+        const t = Math.min(1, (now - start) / duration);
+        video.style.opacity = String(from + (to - from) * t);
+        if (t < 1) rafRef.current = requestAnimationFrame(tick);
+        else { rafRef.current = null; onDone && onDone(); }
+      };
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    const fadeIn = () => { fadingOutRef.current = false; animateOpacity(parseFloat(video.style.opacity || "0"), 1, 500); };
+    const fadeOut = () => animateOpacity(parseFloat(video.style.opacity || "1"), 0, 500);
+    const onLoaded = () => { video.style.opacity = "0"; video.play().catch(()=>{}); fadeIn(); };
+    const onTime = () => {
+      if (!video.duration) return;
+      if (video.duration - video.currentTime <= 0.55 && !fadingOutRef.current) {
+        fadingOutRef.current = true; fadeOut();
+      }
+    };
+    const onEnded = () => {
+      video.style.opacity = "0";
+      cancelAnim();
+      setTimeout(() => { video.currentTime = 0; video.play().catch(()=>{}); fadeIn(); }, 100);
+    };
+    video.style.opacity = "0";
+    video.addEventListener("loadeddata", onLoaded);
+    video.addEventListener("timeupdate", onTime);
+    video.addEventListener("ended", onEnded);
+    if (video.readyState >= 2) onLoaded();
+    return () => {
+      cancelAnim();
+      video.removeEventListener("loadeddata", onLoaded);
+      video.removeEventListener("timeupdate", onTime);
+      video.removeEventListener("ended", onEnded);
+    };
+  }, []);
+
+  /* Kinetic title — word stagger on mount, italic word in plum */
+  const titleRef = useRef(null);
+  useEffect(() => {
+    const t = setTimeout(() => titleRef.current && titleRef.current.classList.add('in'), 200);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <div className="hero-shell">
+      {/* Background video */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover translate-y-[17%]"
+        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_115001_bcdaa3b4-03de-47e7-ad63-ae3e392c32d4.mp4"
+        muted autoPlay playsInline preload="auto"
+        style={{ opacity: 0 }}
+      />
+      {/* Aubergine wash to tint the video into the brand */}
+      <div className="absolute inset-0 pointer-events-none" style={{background:'linear-gradient(180deg, rgba(14,8,23,0.20) 0%, rgba(14,8,23,0.35) 60%, rgba(14,8,23,0.85) 100%), radial-gradient(70% 60% at 50% 50%, rgba(142,91,184,0.18), rgba(142,91,184,0) 70%)'}}></div>
+
+      <Nav />
+
+      <div className="relative z-10 flex flex-col h-full">
+        <main className="flex-1 flex flex-col items-center justify-center px-6 text-center -translate-y-[6%]">
+          <p className="eyebrow mb-8" style={{color: 'var(--heliotrope)'}}>
+            Est. 2011 <span className="rule"></span> A Centre for English Studies <span className="rule"></span> New Delhi
+          </p>
+
+          <h1
+            ref={titleRef}
+            className="stagger-heading display italic-plum"
+            style={{
+              fontSize: 'clamp(3.5rem, 9vw, 7.5rem)',
+              lineHeight: 0.95,
+              color: 'var(--cream)',
+              marginBottom: '2rem',
+              maxWidth: '14ch',
+            }}
+          >
+            {['Language,','refined','through','craft.'].map((w, i) => (
+              <span
+                key={i}
+                className="stagger-word"
+                style={{
+                  marginRight: '0.3em',
+                  transitionDelay: `${i * 100}ms`,
+                }}
+              >
+                {w === 'craft.' ? <em>craft.</em> : w}
+              </span>
+            ))}
+          </h1>
+
+          <p className="serif-body" style={{color:'rgba(242,235,224,0.78)', fontSize:'1.25rem', maxWidth:'34rem', lineHeight: 1.55, marginBottom: '2.5rem'}}>
+            A studio in New Delhi devoted to English literature, composition,
+            and the patient work of thinking well on the page.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <a href="#services" className="liquid-glass pill-btn" data-cursor="link" style={{padding:'1rem 2rem'}}>
+              Explore the Programmes
+            </a>
+            <a href="#contact" className="pill-btn" data-cursor="link" style={{color: 'var(--cream)'}}>
+              Arrange a Consultation
+              <span className="arrow"><ArrowRight size={18} /></span>
+            </a>
+          </div>
+        </main>
+
+        <div className="scroll-cue">
+          <span>Read on</span>
+          <span className="line"></span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Section eyebrow + heading ---------- */
+function SectionHeader({ roman, kicker, children, narrow }) {
+  return (
+    <header style={{marginBottom: '4rem', maxWidth: narrow ? '40rem' : 'none'}}>
+      <p className="eyebrow reveal" style={{marginBottom: '1.25rem'}}>
+        <span style={{color:'var(--heliotrope)'}}>{roman}.</span>
+        <span className="rule"></span>
+        {kicker}
+      </p>
+      <h2 className="display italic-plum reveal stagger-heading" style={{fontSize:'clamp(2.5rem, 6vw, 5rem)', lineHeight: 1, color: 'var(--cream)', marginBottom: 0}}>
+        {children}
+      </h2>
+    </header>
+  );
+}
+
+/* ---------- About ---------- */
+function About() {
+  return (
+    <section id="about" className="section">
+      <div className="section-inner">
+        <SectionHeader roman="i" kicker="A centre">
+          A quiet place for <em>serious</em> study.
+        </SectionHeader>
+
+        <div className="grid md:grid-cols-12 gap-12 md:gap-16">
+          <div className="md:col-span-7 has-margin">
+            <p className="reveal dropcap serif-body" style={{fontSize:'1.35rem', lineHeight: 1.55, color:'rgba(242,235,224,0.92)', marginBottom: '1.5rem'}}>
+              Named for the chrysalis, that patient, hidden stage of
+              transformation, our centre was founded in 2011 on a simple
+              conviction: that command of the English language is cultivated
+              slowly, in conversation with experienced teachers and enduring
+              texts.
+            </p>
+            <p className="reveal delay-1 serif-body" style={{fontSize:'1.2rem', lineHeight: 1.65, color:'rgba(242,235,224,0.8)', marginBottom: '1.5rem'}}>
+              Our tutors are career educators, drawn from universities and
+              secondary schools, who have spent decades reading closely and
+              teaching with care. Every lesson is prepared. Every student is
+              read.
+            </p>
+            <p className="reveal delay-2 serif-body" style={{fontSize:'1.2rem', lineHeight: 1.65, color:'rgba(242,235,224,0.8)'}}>
+              We do not chase trends. We do not shortcut the work. What we
+              offer is older and plainer than that: attention, time, and the
+              patient company of people who love the language.
+            </p>
+            <span className="margin-note margin-note--right script">this is the whole thesis.</span>
+          </div>
+
+          <div className="md:col-span-5">
+            <div className="grid grid-cols-2 gap-8" style={{borderLeft: '1px solid var(--hairline)', paddingLeft: '2rem'}}>
+              <Stat n={14} label="Years since founding" />
+              <Stat n={300} label="Students guided" suffix="+" />
+              <Stat n={3} label="Faculty members" />
+              <Stat n={6} label="Curricula taught" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Stat({ n, label, suffix = "" }) {
+  const ref = useRef(null);
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    let started = false;
+    const check = () => {
+      if (started) return;
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight - 40 && r.bottom > 0) {
+        started = true;
+        window.removeEventListener('scroll', check);
+        const startT = Date.now();
+        const dur = 1400;
+        const id = setInterval(() => {
+          const t = Math.min(1, (Date.now() - startT) / dur);
+          const eased = 1 - Math.pow(1 - t, 3);
+          setVal(Math.round(eased * n));
+          if (t >= 1) clearInterval(id);
+        }, 33);
+      }
+    };
+    window.addEventListener('scroll', check, { passive: true });
+    check();
+    return () => window.removeEventListener('scroll', check);
+  }, [n]);
+  return (
+    <div ref={ref} className="reveal">
+      <div className="stat-num">{val}{suffix}</div>
+      <div className="mono" style={{color:'rgba(242,235,224,0.6)', marginTop: '0.6rem'}}>{label}</div>
+    </div>
+  );
+}
+
+/* ---------- Pull-quote band ---------- */
+function PullBand() {
+  return (
+    <section className="pull-band" style={{padding:'8rem 2rem'}}>
+      <div className="section-inner has-margin">
+        <p className="display italic-plum reveal" style={{fontSize:'clamp(2.2rem, 5.5vw, 4rem)', lineHeight: 1.1, color:'var(--cream)', maxWidth:'24ch'}}>
+          “Every lesson is prepared. <em>Every student is read.</em>”
+        </p>
+        <p className="mono reveal delay-1" style={{color:'var(--heliotrope)', marginTop:'2rem'}}>
+          The thesis of the studio
+        </p>
+        <span className="margin-note margin-note--right" style={{top:'1rem'}}>this is the whole thesis.</span>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Services ---------- */
+const services = [
+  {
+    num: '01',
+    title: 'Literature Seminars',
+    body: 'Close reading of poetry, drama, and the novel, from Chaucer to the contemporary, in small discussion-led groups. The pace is patient. The texts are chosen with care. The work is to read more attentively than the world generally allows.',
+    points: ['Small seminars of four to six', 'Set texts from canonical and contemporary writers', 'Discussion, annotation, weekly reading journal'],
+  },
+  {
+    num: '02',
+    title: 'Composition & Style',
+    body: 'Weekly essay instruction grounded in classical rhetoric: argument, clarity, cadence, and the careful revision of one\'s own prose. We teach students to read what they have written, then write it again with more honesty.',
+    points: ['Argument and structure', 'Sentence-level revision', 'A portfolio of finished essays'],
+  },
+  {
+    num: '03',
+    title: 'Examination Preparation',
+    body: 'Focused tutelage across A Level, O Level, IGCSE, IB, CBSE, and ICSE, with equal attention to technique and substance. We prepare students for the paper, but we do not reduce English to the paper.',
+    points: ['Past-paper drill and mark scheme literacy', 'Set-text mastery', 'Mock examinations with written feedback'],
+  },
+  {
+    num: '04',
+    title: 'Private Tutorials',
+    body: 'One-to-one sessions tailored to the student\'s reading life, whether nurturing a gifted writer, preparing a Cambridge applicant, or rebuilding fundamentals with patience. Every plan is written for one person.',
+    points: ['Bespoke reading list', 'Weekly written feedback', 'Long-form mentorship'],
+  },
+];
+
+function Services() {
+  return (
+    <section id="services" className="section">
+      <div className="section-inner">
+        <SectionHeader roman="ii" kicker="Programmes">
+          Programs of <em>study</em>.
+        </SectionHeader>
+
+        <div className="space-y-24 md:space-y-32">
+          {services.map((s, i) => (
+            <ServiceSpread key={s.num} {...s} flipped={i % 2 === 1} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ServiceSpread({ num, title, body, points, flipped }) {
+  return (
+    <article className="grid md:grid-cols-12 gap-8 md:gap-16 items-start">
+      <div className={`md:col-span-7 ${flipped ? 'md:order-2' : ''} has-margin`}>
+        <div className="flex items-start gap-6 reveal">
+          <span className="service-number">{num}.</span>
+          <h3 className="display italic-plum" style={{fontSize:'clamp(2rem, 4vw, 3.2rem)', lineHeight: 1, color:'var(--cream)', marginTop:'0.6rem'}}>{title}</h3>
+        </div>
+        <p className="reveal delay-1 serif-body" style={{fontSize:'1.2rem', lineHeight: 1.65, color:'rgba(242,235,224,0.82)', margin:'2rem 0 2.5rem', maxWidth: '36rem'}}>
+          {body}
+        </p>
+        <ul className="reveal delay-2" style={{listStyle:'none', padding:0, margin:0, display:'grid', gap:'0.8rem'}}>
+          {points.map((p, i) => (
+            <li key={i} className="mono" style={{color:'rgba(242,235,224,0.7)', display:'flex', alignItems:'baseline', gap:'1rem'}}>
+              <span style={{color:'var(--heliotrope)'}}>{String(i+1).padStart(2,'0')}</span>
+              <span style={{letterSpacing:'0.12em'}}>{p}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <figure className={`md:col-span-5 ${flipped ? 'md:order-1' : ''} reveal delay-1`}>
+        <div className="placeholder-img" style={{aspectRatio:'4/5'}} data-caption="portrait pending"></div>
+      </figure>
+    </article>
+  );
+}
+
+/* ---------- Boards (Curricula) ---------- */
+const boards = [
+  { roman: 'i.', name: 'A Level', body: 'Cambridge & Edexcel' },
+  { roman: 'ii.', name: 'O Level', body: 'Cambridge Assessment' },
+  { roman: 'iii.', name: 'IGCSE', body: 'Cambridge & Edexcel' },
+  { roman: 'iv.', name: 'IB', body: 'MYP & Diploma Programme' },
+  { roman: 'v.', name: 'CBSE', body: 'Central Board, India' },
+  { roman: 'vi.', name: 'ICSE', body: 'Indian School Certificate' },
+];
+
+function Boards() {
+  return (
+    <section id="boards" className="section plum-wash">
+      <div className="section-inner">
+        <SectionHeader roman="iii" kicker="Curricula">
+          Boards we <em>prepare</em> for.
+        </SectionHeader>
+
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {boards.map((b, i) => (
+            <div key={b.name} className={`liquid-glass board-card reveal ${i % 3 === 1 ? 'delay-1' : i % 3 === 2 ? 'delay-2' : ''}`}>
+              <span className="mono" style={{color:'var(--heliotrope)'}}>{b.roman}</span>
+              <div>
+                <h4 className="display" style={{fontSize:'1.9rem', color:'var(--cream)', margin: 0, letterSpacing:'-0.01em'}}>{b.name}</h4>
+                <p className="serif-body" style={{color:'rgba(242,235,224,0.65)', margin: '0.4rem 0 0', fontSize:'0.95rem', fontStyle:'italic'}}>{b.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Faculty ---------- */
+const faculty = [
+  { name: 'Kavita', role: 'Founder & Head of Holistic Development', bio: 'Kavita draws on years of teaching at The British School New Delhi to shape an approach that reaches beyond academics into how students think, communicate, and carry themselves. That philosophy is the foundation everything here is built on.', initials: 'KC' },
+  { name: 'Nikasha', role: 'Lead IGCSE & IB Educator', bio: 'Nikasha is a proud alumna of The British School New Delhi, giving her a rare insider\u2019s view of the very curricula she now teaches. She pairs that firsthand experience with a warm but demanding classroom style that pushes students toward genuine mastery rather than exam shortcuts.', initials: 'NM' },
+  { name: 'Supriya', role: 'Primary Educator', bio: 'Supriya turns early learning into something children actually look forward to. Her classroom is structured but joyful, laying the groundwork in literacy, numeracy, and confidence that every older student eventually looks back and thanks her for.', initials: 'SR' },
+];
+
+function Faculty() {
+  return (
+    <section id="faculty" className="section">
+      <div className="section-inner">
+        <SectionHeader roman="iv" kicker="The faculty">
+          The tutors of <em>Chrysalis</em>.
+        </SectionHeader>
+
+        <div className="space-y-24">
+          {faculty.map((f, i) => (
+            <article key={f.name} className="grid md:grid-cols-12 gap-8 md:gap-16 items-center">
+              <figure className={`md:col-span-5 ${i % 2 === 1 ? 'md:order-2' : ''} reveal`}>
+                <div className="placeholder-img" style={{aspectRatio:'4/5'}} data-caption={`portrait of ${f.name.toLowerCase()}, pending`}></div>
+              </figure>
+              <div className={`md:col-span-7 ${i % 2 === 1 ? 'md:order-1' : ''} has-margin`}>
+                <p className="mono reveal" style={{color:'var(--heliotrope)', marginBottom:'1rem'}}>{f.initials}<span className="rule"></span></p>
+                <h3 className="display reveal" style={{fontSize:'clamp(3rem, 6vw, 5rem)', lineHeight: 0.95, color:'var(--cream)', margin: '0 0 0.5rem'}}>{f.name}</h3>
+                <p className="display italic-plum reveal delay-1" style={{fontSize:'1.4rem', color:'var(--plum)', fontStyle:'italic', margin:'0 0 2rem'}}>{f.role}</p>
+                <p className="reveal delay-2 serif-body" style={{fontSize:'1.18rem', lineHeight: 1.65, color:'rgba(242,235,224,0.82)', maxWidth: '36rem'}}>{f.bio}</p>
+                <svg className="reveal delay-3" viewBox="0 0 200 50" width="160" height="44" style={{marginTop:'2rem', color:'var(--plum)'}}>
+                  <path d={i === 0 ? "M5 30 Q 25 5, 50 28 T 100 22 Q 130 35, 160 18 Q 175 12, 190 25" : i === 1 ? "M10 32 C 30 10, 60 35, 90 18 Q 110 8, 140 30 T 195 22" : "M8 28 Q 35 8, 70 30 Q 100 50, 130 22 Q 165 5, 195 28"} fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" opacity="0.85"/>
+                </svg>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Testimonials ---------- */
+const quotes = [
+  { q: 'My daughter arrived at Chrysalis reluctant to write a sentence. She now writes essays with a voice that is unmistakably her own.', emphasis: 'a voice that is unmistakably her own', who: 'Parent, Form V', marg: 'this is the whole point.' },
+  { q: 'The seminars feel like university the way university ought to feel. Small, demanding, and entirely unhurried.', emphasis: 'small, demanding, and entirely unhurried', who: 'A Level Student' },
+  { q: 'I credit Chrysalis with the essay that secured my Cambridge offer. The attention to revision was unlike anything I had known.', emphasis: 'the attention to revision', who: 'University Matriculant, 2024' },
+  { q: 'I walked in thinking I disliked poetry. I walked out having memorised half of Keats\u2019s odes, somehow by accident.', emphasis: 'memorised half of Keats\u2019s odes', who: 'IB Student', marg: 'the kids really do walk in disliking poetry.' },
+  { q: 'They gave my writing an ear. I did not know prose could sound like anything until I studied here.', emphasis: 'gave my writing an ear', who: 'Former Student, now reading English at Oxford' },
+];
+
+function highlight(text, phrase) {
+  const i = text.toLowerCase().indexOf(phrase.toLowerCase());
+  if (i < 0) return text;
+  return (<>
+    {text.slice(0, i)}
+    <em>{text.slice(i, i + phrase.length)}</em>
+    {text.slice(i + phrase.length)}
+  </>);
+}
+
+function Testimonials() {
+  return (
+    <section id="testimonials" className="section">
+      <div className="section-inner">
+        <SectionHeader roman="iv" kicker="In their words">
+          Notes from <em>readers</em>.
+        </SectionHeader>
+
+        <div className="space-y-28 md:space-y-40">
+          {quotes.map((t, i) => (
+            <figure key={i} className={`has-margin ${i % 2 === 0 ? 'md:pr-32' : 'md:pl-32 md:text-right'}`}>
+              <blockquote className="reveal display italic-plum" style={{fontSize:'clamp(2rem, 5vw, 3.6rem)', lineHeight: 1.12, color:'var(--cream)', margin: 0, maxWidth:'30ch'}}>
+                <span style={{color:'var(--heliotrope)', opacity:0.5, fontFamily:'var(--display)', fontStyle:'italic'}}>“</span>
+                {highlight(t.q, t.emphasis)}
+                <span style={{color:'var(--heliotrope)', opacity:0.5, fontFamily:'var(--display)', fontStyle:'italic'}}>”</span>
+              </blockquote>
+              <figcaption className="mono reveal delay-1" style={{color:'var(--heliotrope)', marginTop:'2rem'}}>
+                <span className="rule"></span>{t.who}
+              </figcaption>
+              {t.marg && <span className={`margin-note ${i % 2 === 0 ? 'margin-note--right' : 'margin-note--left'}`}>{t.marg}</span>}
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- FAQ ---------- */
+const faqs = [
+  { q: 'What age groups do you teach?', a: 'We work with students from roughly age ten through university entrance: from early literature appreciation to advanced composition and exam preparation.' },
+  { q: 'Are sessions one-to-one or in groups?', a: 'Both. Literature seminars are small discussion-led groups (typically four to six students); composition and examination preparation are offered either privately or in pairs.' },
+  { q: 'Do you offer online tuition?', a: 'Yes. Students outside Delhi attend by video, with shared documents for live annotation. In-person sessions remain available at the studio.' },
+  { q: 'How are fees structured?', a: 'Fees vary by programme, format, and frequency. Please write or call for a detailed proposal; we are happy to tailor a plan to the student.' },
+  { q: 'How do I begin?', a: 'Arrange a brief consultation through the contact section below, WhatsApp, or a phone call. We will discuss the student\u2019s goals and recommend a course of study.' },
+];
+
+function Faq() {
+  const [open, setOpen] = useState(0);
+  return (
+    <section className="section">
+      <div className="section-inner">
+        <SectionHeader roman="v" kicker="Enquiries">
+          Frequently <em>asked</em>.
+        </SectionHeader>
+        <div>
+          {faqs.map((f, i) => (
+            <div key={i} className={`faq-item reveal ${open === i ? 'open' : ''}`}>
+              <button className="faq-q" onClick={() => setOpen(open === i ? -1 : i)} data-cursor="link">
+                <span className="display">{f.q}</span>
+                <span className="faq-sign" aria-hidden="true"></span>
+              </button>
+              <div className="faq-a">
+                <div className="faq-a-inner serif-body">{f.a}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Contact ---------- */
+function Contact() {
+  const [submitted, setSubmitted] = useState(false);
+  return (
+    <section id="contact" className="section plum-wash">
+      <div className="section-inner">
+        <SectionHeader roman="vi" kicker="Correspondence" narrow>
+          Begin a <em>correspondence</em>.
+        </SectionHeader>
+
+        <div className="grid md:grid-cols-12 gap-12 md:gap-20">
+          <div className="md:col-span-7">
+            <p className="serif-body reveal" style={{fontSize:'1.2rem', lineHeight:1.6, color:'rgba(242,235,224,0.82)', marginBottom:'2.5rem', maxWidth:'34rem'}}>
+              We welcome prospective students and their families to write to us.
+              A tutor will respond within two working days, with care.
+            </p>
+
+            <form className="reveal delay-1 space-y-7" onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>
+              <div className="grid md:grid-cols-2 gap-7">
+                <label className="field">
+                  <span className="field-label">Your name</span>
+                  <input type="text" name="name" required className="field-input" data-cursor="link" />
+                </label>
+                <label className="field">
+                  <span className="field-label">Email</span>
+                  <input type="email" name="email" required className="field-input" data-cursor="link" />
+                </label>
+              </div>
+              <label className="field">
+                <span className="field-label">Subject of enquiry</span>
+                <input type="text" name="subject" className="field-input" data-cursor="link" />
+              </label>
+              <label className="field">
+                <span className="field-label">A few sentences about the student</span>
+                <textarea name="message" rows="5" required className="field-textarea" data-cursor="link"></textarea>
+              </label>
+
+              <div className="pt-2 flex items-center gap-4">
+                <button type="submit" className="liquid-glass pill-btn" data-cursor="link" style={{padding:'1rem 2rem'}}>
+                  Send the letter
+                  <span className="arrow"><ArrowRight size={18} /></span>
+                </button>
+                {submitted && <span className="script" style={{color:'var(--heliotrope)', fontSize:'1.3rem'}}>thank you — a tutor will write back.</span>}
+              </div>
+            </form>
+          </div>
+
+          <aside className="md:col-span-5">
+            <p className="mono reveal" style={{color:'var(--heliotrope)', marginBottom:'1.5rem'}}>Or, more directly</p>
+            <ul className="space-y-5" style={{listStyle:'none', padding:0, margin:0}}>
+              <li className="reveal delay-1">
+                <a href="tel:+919810954868" className="flex items-center gap-4 nav-link" data-cursor="link" style={{fontSize:'1.05rem'}}>
+                  <span className="liquid-glass rounded-full p-3 flex" style={{color:'var(--heliotrope)'}}><Phone size={18}/></span>
+                  +91 98109 54868
+                </a>
+              </li>
+              <li className="reveal delay-2">
+                <a href="https://instagram.com/chrysalisthecenter" className="flex items-center gap-4 nav-link" target="_blank" rel="noopener" data-cursor="link" style={{fontSize:'1.05rem'}}>
+                  <span className="liquid-glass rounded-full p-3 flex" style={{color:'var(--heliotrope)'}}><Instagram size={18}/></span>
+                  @chrysalisthecenter
+                </a>
+              </li>
+              <li className="reveal delay-3">
+                <a href="https://maps.app.goo.gl/NNWcwjmY4PgULJU67" className="flex items-center gap-4 nav-link" target="_blank" rel="noopener" data-cursor="link" style={{fontSize:'1.05rem'}}>
+                  <span className="liquid-glass rounded-full p-3 flex" style={{color:'var(--heliotrope)'}}><MapPin size={18}/></span>
+                  The studio, Lajpat Nagar
+                </a>
+              </li>
+            </ul>
+
+            <p className="script reveal delay-3" style={{color:'var(--plum)', fontSize:'1.5rem', marginTop:'2.5rem', maxWidth:'18rem', transform:'rotate(-1.5deg)'}}>
+              we read every note that arrives.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Footer ---------- */
+function Footer() {
+  return (
+    <footer className="section" style={{paddingTop: '4rem', paddingBottom: '3rem', borderTop: '1px solid var(--hairline)'}}>
+      <div className="section-inner flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+        <div>
+          <div className="flex items-center gap-2.5 mb-4">
+            <span className="chrysalis-mark" style={{width: 26, height: 26, color:'var(--cream)'}} aria-hidden="true"></span>
+            <span className="display" style={{fontSize: '1.4rem', color:'var(--cream)'}}>Chrysalis</span>
+          </div>
+          <p className="serif-body" style={{color:'rgba(242,235,224,0.5)', maxWidth:'24rem', fontSize:'0.95rem', lineHeight: 1.55}}>
+            A small studio in New Delhi teaching English literature, composition,
+            and the patient work of examination preparation.
+          </p>
+        </div>
+        <div className="mono" style={{color:'rgba(242,235,224,0.4)'}}>
+          © <span id="year"></span> Chrysalis<span className="rule"></span>Est. 2011
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ---------- App ---------- */
+function App() {
+  return (
+    <>
+      <Hero />
+      <About />
+      <PullBand />
+      <Services />
+      <Boards />
+      <Faculty />
+      <Testimonials />
+      <Faq />
+      <Contact />
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+<script>
+/* ---------- Year ---------- */
+window.addEventListener('load', () => {
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+});
+
+/* ---------- Reveal-on-scroll (rAF + getBoundingClientRect, no IntersectionObserver) ---------- */
+const revealEls = new Set();
+const stagger = new Set();
+const margins = new Set();
+
+function checkReveals() {
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  const triggerLine = vh - 60;
+  const dropIfVisible = (el, bucket) => {
+    const r = el.getBoundingClientRect();
+    if (r.top < triggerLine && r.bottom > 0) {
+      el.classList.add('in');
+      bucket.delete(el);
+    }
+  };
+  revealEls.forEach((el) => dropIfVisible(el, revealEls));
+  stagger.forEach((el) => dropIfVisible(el, stagger));
+  margins.forEach((el) => dropIfVisible(el, margins));
+}
+
+function requestReveals() {
+  // Synchronous — rAF is unreliable in some sandboxes.
+  checkReveals();
+}
+
+window.addEventListener('scroll', requestReveals, { passive: true });
+window.addEventListener('resize', requestReveals);
+// Safety net: poll for visibility every 250ms in case scroll events miss us
+setInterval(checkReveals, 250);
+
+const wireReveal = () => {
+  document.querySelectorAll('.reveal:not([data-rv])').forEach((el) => {
+    el.setAttribute('data-rv', '');
+    revealEls.add(el);
+  });
+  document.querySelectorAll('.stagger-heading:not([data-rv])').forEach((el) => {
+    el.setAttribute('data-rv', '');
+    stagger.add(el);
+  });
+  document.querySelectorAll('.margin-note:not([data-rv])').forEach((el) => {
+    el.setAttribute('data-rv', '');
+    margins.add(el);
+  });
+  requestReveals();
+};
+
+/* ---------- Word stagger spans inside stagger-heading h2 ---------- */
+function wrapStaggerWords() {
+  document.querySelectorAll('h2.stagger-heading').forEach((h) => {
+    if (h.dataset.wrapped) return;
+    h.dataset.wrapped = '1';
+    const nodes = Array.from(h.childNodes);
+    h.innerHTML = '';
+    let i = 0;
+    nodes.forEach((node) => {
+      if (node.nodeType === 3) {
+        node.textContent.split(/\s+/).filter(Boolean).forEach((word) => {
+          const s = document.createElement('span');
+          s.className = 'stagger-word';
+          s.style.transitionDelay = (i * 80) + 'ms';
+          s.textContent = word + ' ';
+          h.appendChild(s);
+          i++;
+        });
+      } else if (node.nodeType === 1) {
+        const s = document.createElement('span');
+        s.className = 'stagger-word';
+        s.style.transitionDelay = (i * 80) + 'ms';
+        s.appendChild(node.cloneNode(true));
+        s.appendChild(document.createTextNode(' '));
+        h.appendChild(s);
+        i++;
+      }
+    });
+  });
+}
+
+/* ---------- Spine numerals ---------- */
+function wireSpine() {
+  const spineItems = document.querySelectorAll('.spine__item');
+  const map = new Map();
+  spineItems.forEach((el) => map.set(el.dataset.target, el));
+  const sections = ['about','services','boards','testimonials','contact']
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+
+  let current = null;
+  const update = () => {
+    const mid = window.innerHeight * 0.4;
+    let active = null;
+    sections.forEach((s) => {
+      const r = s.getBoundingClientRect();
+      if (r.top <= mid && r.bottom >= mid) active = s.id;
+    });
+    if (active !== current) {
+      current = active;
+      spineItems.forEach((el) => el.classList.toggle('active', el.dataset.target === current));
+    }
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
+/* ---------- Fountain pen cursor ---------- */
+function wireCursor() {
+  if (matchMedia('(hover: none)').matches) return;
+  const cursor = document.getElementById('pen-cursor');
+  if (!cursor) return;
+  let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+  let cx = mx, cy = my;
+  let lastTrail = 0;
+
+  window.addEventListener('mousemove', (e) => {
+    mx = e.clientX; my = e.clientY;
+    cursor.classList.remove('hidden');
+
+    // ink trail
+    const now = performance.now();
+    if (now - lastTrail > 36) {
+      lastTrail = now;
+      const dot = document.createElement('span');
+      dot.className = 'ink-trail-dot';
+      dot.style.left = mx + 'px';
+      dot.style.top = my + 'px';
+      document.body.appendChild(dot);
+      requestAnimationFrame(() => {
+        dot.style.opacity = '0';
+        dot.style.transform = `translate(${(Math.random()-0.5)*8}px, ${(Math.random()-0.5)*8}px)`;
+      });
+      setTimeout(() => dot.remove(), 700);
+    }
+  }, { passive: true });
+
+  window.addEventListener('mouseleave', () => cursor.classList.add('hidden'));
+  window.addEventListener('mouseenter', () => cursor.classList.remove('hidden'));
+
+  const loop = () => {
+    cx += (mx - cx) * 0.22;
+    cy += (my - cy) * 0.22;
+    cursor.style.transform = `translate(${cx - cursor.offsetWidth/2}px, ${cy - cursor.offsetHeight/2}px)`;
+    requestAnimationFrame(loop);
+  };
+  loop();
+
+  // Hover detect
+  const isInteractive = (el) => {
+    if (!el) return false;
+    if (el.matches && el.matches('a, button, input, textarea, select, [data-cursor="link"], .faq-q')) return true;
+    return el.parentElement ? isInteractive(el.parentElement) : false;
+  };
+  document.addEventListener('mouseover', (e) => cursor.classList.toggle('nib-mode', isInteractive(e.target)));
+}
+
+/* ---------- Boot ---------- */
+let spineWired = false;
+const boot = () => {
+  wrapStaggerWords();
+  wireReveal();
+  if (!spineWired) { wireSpine(); spineWired = true; }
+  wireCursor();
+};
+
+// Re-wire whenever React appends DOM (handles the Babel mount delay)
+const root = document.getElementById('root');
+if (root) {
+  const mo = new MutationObserver(() => {
+    wrapStaggerWords();
+    wireReveal();
+    if (!spineWired) {
+      const haveSections = document.getElementById('about');
+      if (haveSections) { wireSpine(); spineWired = true; }
+    }
+  });
+  mo.observe(root, { childList: true, subtree: true });
+}
+
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  boot();
+} else {
+  window.addEventListener('DOMContentLoaded', boot);
+}
+window.addEventListener('load', boot);
+// Safety re-trigger after fonts/babel
+setTimeout(boot, 600);
+setTimeout(boot, 1800);
+setTimeout(boot, 3500);
+</script>
+
+</body>
+</html>
